@@ -83,4 +83,9 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     protected $spatialFields = [
         'location'
     ];
+
+
+    public function designs(){
+        return $this->hasMany(Design::class);
+    }
 }

@@ -2,24 +2,30 @@
 
 namespace App\Jobs;
 
+
+use Exception;
+use App\models\Design;
 use Illuminate\Bus\Queueable;
+use Illuminate\Support\Facades\Log;
+use Intervention\Image\Facades\Image;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
 
-class uploadImage implements ShouldQueue
+class UploadImage implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    protected $design;
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Design $design)
     {
-        //
+        $this->design = $design;
     }
 
     /**
@@ -29,6 +35,28 @@ class uploadImage implements ShouldQueue
      */
     public function handle()
     {
-        //
+        
+        $disk = $this->design->disk;
+        $original_file = storage_path('\uploads\original\\'.$this->design->image);
+        try{
+            // create the large image and save to temp location
+            Image::make($original_file)
+                ->fit(800, 600, function($constraints){
+                    $constraints->aspectRatio();
+                })
+                ->save($large = storage_path('\uploads\large\\'.$this->design->image));
+
+            // create the thumbnail    
+            Image::make($original_file)
+                ->fit(250, 200, function($constraints){
+                    $constraints->aspectRatio();
+                })
+                ->save($thumbnail = storage_path('\uploads\thumbnail\\'.$this->design->image));
+            
+            // store images to permanent storage 
+
+        }catch(Exception $e){
+            Log::error($e->getMessage());
+        }
     }
 }

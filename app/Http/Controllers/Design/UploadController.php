@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers\Design;
 
-use App\Jobs\uploadImage;
+
+use App\Jobs\UploadImage;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class UploadController extends Controller
 {
     // validate incoming request for image
-    protected function vaidateImage(Request $request){
+    protected function validateImage(Request $request){
         $request->validate([
-            'image' => ['required','mimes:png, jpg, jpeg, gif, bmp','max:2048']
+            'image' => ['required','mimes:png,jpg,jpeg,gif,bmp','max:2048']
         ]);
     }
 
@@ -44,7 +45,7 @@ class UploadController extends Controller
      *  Add design to the database
      */
     protected function createDesign($filename){
-        return auth()->user()->designes()->create([
+        return auth()->user()->designs()->create([
             'image' => $filename,
             'disk' => config('site.upload_disk'),
         ]);
@@ -54,7 +55,7 @@ class UploadController extends Controller
      *  Dispatch job to manipulate image
      */
     protected function imageManipulate($design){
-        $this->dispatch(new uploadImage($design));
+        UploadImage::dispatch($design);
     }
 
     /**

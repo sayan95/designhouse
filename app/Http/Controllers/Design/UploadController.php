@@ -31,7 +31,7 @@ class UploadController extends Controller
      * Business card.png ---> timestamp()_business_card.png
      */
     protected function getImageOriginalName($image){
-        return time().'_'.preg_replace('/\s+/','_',strtolower($image->getClientOriginalName()));
+        return time().'_'.preg_replace('/\s/+','_',strtolower($image->getClientOriginalName()));
     }
 
     /**
@@ -52,9 +52,12 @@ class UploadController extends Controller
     }
 
     /**
-     *  Dispatch job to manipulate image
+     *  Dispatch a job to manipulate image
      */
     protected function imageManipulate($design){
+        /**
+         * job UploadImage
+         */
         UploadImage::dispatch($design);
     }
 

@@ -32,10 +32,10 @@ class DeleteController extends Controller
         $design = Design::findOrFail($id);
 
         $this->authorize('delete', $design);
-
-        $design->delete();
-
+        
         $this->deleteAssoc($design); 
+        
+        $design->delete();
         
         return response()->json(['success'=>[
             'message' => 'The design is deleted successfuly'

@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Design;
 use App\Jobs\UploadImage;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\DesignResource;
 
 class UploadController extends Controller
 {
@@ -81,9 +82,11 @@ class UploadController extends Controller
 
         $this->imageManipulate($design);
 
-        return response()->json(['success'=>[
-            'message' => "Design is being uploaded",
-            'design' => $design
-        ]], 200);
+        return new DesignResource($design);
+        
+        // return response()->json(['success'=>[
+        //     'message' => "Design is being uploaded",
+        //     'design' => $design
+        // ]], 200);
     }
 }

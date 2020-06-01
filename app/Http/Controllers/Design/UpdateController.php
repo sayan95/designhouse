@@ -6,6 +6,7 @@ use App\models\Design;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\DesignResource;
 
 class UpdateController extends Controller
 {
@@ -31,9 +32,11 @@ class UpdateController extends Controller
             'is_live' => ! $design->upload_successful ? false : true,  
         ]);
         
-        return response()->json(['sucess'=>[
-            'message' => 'Design is updated successfully',
-            'design' => $design
-        ]], 200);
+        return new DesignResource($design);
+        
+        // return response()->json(['sucess'=>[
+        //     'message' => 'Design is updated successfully',
+        //     'design' => $design
+        // ]], 200);
     }
 }

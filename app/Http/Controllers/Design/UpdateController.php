@@ -21,13 +21,16 @@ class UpdateController extends Controller
         $this->validates($request, $id);
 
         $design = Design::find($id);
+
+        $this->authorize('update', $design);
+
         $design->update([
             'title' => $request->title,
             'description' => $request->description,
             'slug' => Str::slug($request->title), 
             'is_live' => ! $design->upload_successful ? false : true,  
         ]);
-
+        
         return response()->json(['sucess'=>[
             'message' => 'Design is updated successfully',
             'design' => $design

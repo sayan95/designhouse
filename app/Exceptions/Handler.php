@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
@@ -50,6 +51,11 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
+        if($exception instanceof AuthorizationException && $request->expectsJson()){
+            return response()->json(['error'=>[
+                'message' => "Sorry ! You don't have permission to this action"
+            ]],403);
+        }
         return parent::render($request, $exception);
     }
 }

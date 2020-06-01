@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
@@ -55,6 +56,12 @@ class Handler extends ExceptionHandler
             return response()->json(['error'=>[
                 'message' => "Sorry ! You don't have permission to this action"
             ]],403);
+        }
+
+        if($exception instanceof ModelNotFoundException && $request->expectsJson()){
+            return response()->json(['error' => [
+                'message' => "No design found "
+            ]] , 404);
         }
         return parent::render($request, $exception);
     }

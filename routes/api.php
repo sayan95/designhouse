@@ -14,6 +14,9 @@ Route::group(['middleware' =>['auth:api']],function(){
 
     // Update design
     Route::put('designs/update/{id}','Design\UpdateController@update');
+
+    // Delete design
+    Route::delete('designs/delete/{id}','Design\DeleteController@destroy');
 });
 
 // Route group for guests only

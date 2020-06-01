@@ -21,7 +21,7 @@ class UpdateController extends Controller
     public function update(Request $request, $id){
         $this->validates($request, $id);
 
-        $design = Design::find($id);
+        $design = Design::findOrFail($id);
 
         $this->authorize('update', $design);
 

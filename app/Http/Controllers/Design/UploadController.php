@@ -31,7 +31,7 @@ class UploadController extends Controller
      * Business card.png ---> timestamp()_business_card.png
      */
     protected function getImageOriginalName($image){
-        return time().'_'.preg_replace('/\s/+','_',strtolower($image->getClientOriginalName()));
+        return time().'_'.preg_replace('/\s+/','_',strtolower($image->getClientOriginalName()));
     }
 
     /**
@@ -82,6 +82,7 @@ class UploadController extends Controller
         $this->imageManipulate($design);
 
         return response()->json(['success'=>[
+            'message' => "Design is being uploaded",
             'design' => $design
         ]], 200);
     }

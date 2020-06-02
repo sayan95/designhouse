@@ -63,6 +63,14 @@ class Handler extends ExceptionHandler
                 'message' => "No design found "
             ]] , 404);
         }
+        
+        if($exception instanceof ModelNotDefinedException && $request->expectsJson()){
+            return response()->json(['error' => [
+                'message' => "No model defined "
+            ]] , 500);
+        }
+
+
         return parent::render($request, $exception);
     }
 }

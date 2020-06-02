@@ -15,6 +15,7 @@ class UpdateController extends Controller
         $request->validate([
             'title' => ['required','unique:designs,title,'.$id],
             'description' => ['required','string','min:20','max:140'],
+            'tags' => ['required']
         ]);
     }
 
@@ -32,11 +33,10 @@ class UpdateController extends Controller
             'is_live' => ! $design->upload_successful ? false : true,  
         ]);
         
-        return new DesignResource($design);
+        // apply tag to the design 
+        $design->retag($request->tags);
         
-        // return response()->json(['sucess'=>[
-        //     'message' => 'Design is updated successfully',
-        //     'design' => $design
-        // ]], 200);
+        return new DesignResource($design);
+
     }
 }

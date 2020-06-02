@@ -43,8 +43,12 @@ Route::group(['middleware'=>['guest:api']],function(){
  */ 
 Route::get('me','User\UserController@getUser');
 
-// get all designs
+//  route for designs
 Route::get('designs','Design\DesignController@index');
+Route::get('designs/{id}','Design\DesignController@findById');
+Route::get('designs_where/{col}/{val}','Design\DesignController@findByColName');
+Route::get('designs_where_first/{col}/{val}','Design\DesignController@findByColNameFirst');
+Route::get('designs/paginate/{no}','Design\DesignController@pagination');
 
 // get all users
 Route::get('users','User\UserController@index');

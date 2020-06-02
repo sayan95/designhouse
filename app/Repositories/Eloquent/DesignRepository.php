@@ -10,4 +10,9 @@ class DesignRepository extends BaseRepository implements DesignContract
     public function model(){
         return Design::class;
     }
+
+    public function applyTags($id, array $tags){
+        $design = $this->find($id);
+        $design->retag($tags);
+    }
 }

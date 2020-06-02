@@ -7,9 +7,20 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\DesignResource;
+use App\Repositories\Contracts \DesignContract;
 
 class UpdateController extends Controller
 {
+
+    protected $design;
+    /**
+     * Injection
+     */
+    public function __construct(DesignContract $design){
+        $this->design = $design;
+    }
+
+    
     // validate the request
     protected function validates(Request $request, $id){
         $request->validate([
@@ -20,13 +31,13 @@ class UpdateController extends Controller
     }
 
     public function update(Request $request, $id){
+        
+
+        $design = $this->design->find($id);
+        $this->authorize('update', $design);
         $this->validates($request, $id);
 
-        $design = Design::findOrFail($id);
-
-        $this->authorize('update', $design);
-
-        $design->update([
+        $this->design->update($id,[
             'title' => $request->title,
             'description' => $request->description,
             'slug' => Str::slug($request->title), 
@@ -34,7 +45,7 @@ class UpdateController extends Controller
         ]);
         
         // apply tag to the design 
-        $design->retag($request->tags);
+        $this->design->applyTags($id, $request->tags);
         
         return new DesignResource($design);
 

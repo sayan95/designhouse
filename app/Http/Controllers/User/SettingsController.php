@@ -5,12 +5,19 @@ namespace App\Http\Controllers\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
+use App\Repositories\Contracts\UserContract;
 use App\Rules\CheckSamePassword;
 use App\Rules\MatchOldPassword;
 use Grimzy\LaravelMysqlSpatial\Types\Point;
 
 class SettingsController extends Controller
 {
+    protected $user;
+
+    public function __construct(UserContract $user)
+    {
+        $this->user=$user;
+    }
     public function updateProfile(Request $request){
         $user = auth('api')->user();
 
@@ -24,7 +31,7 @@ class SettingsController extends Controller
         ]);
 
         $location = new Point($request->location['latitude'],$request->location['longitude']);
-        $user->update([
+        $this->user->update($user->id,[
             'name'=> $request->name,
             'formatted_address' => $request->formatted_address,
             'location' => $location,
@@ -37,11 +44,12 @@ class SettingsController extends Controller
     }
 
     public function updatePassword(Request $request){
+        $user = auth('api')->user();
         $request->validate([
             'current_password' => ['required',new MatchOldPassword],
             'password' => ['required','confirmed','min:6', new CheckSamePassword]
         ]);
-        $request->user()->update([
+        $this->user->update($user->id,[
             'password' => bcrypt($request->password)
         ]);
         

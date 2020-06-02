@@ -21,7 +21,7 @@ class UserController extends Controller
     }
 
     public function index(){
-        $users = User::all();
+        $users = $this->user->all();
         return UserResource::collection($users);
     }
     

@@ -6,14 +6,17 @@ use App\models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
+use App\Repositories\Contracts\UserContract;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Support\Facades\URL;
 
 class VerificationController extends Controller
 {
     
-    public function __construct()
+    protected $user;
+    public function __construct(UserContract $user)
     {
+        $this->user = $user;
         $this->middleware('throttle:6,1')->only('verify', 'resend');
     }
 
@@ -51,7 +54,8 @@ class VerificationController extends Controller
         ]);
         
         // if user not found
-        $user = User::where(['email'=>$request->email])->first();
+        $user = $this->user->findWhereFirst('email',$request->email);
+        
         if(! $user){
             return response()->json(['error'=>[
                 'message' => "We can't find a user with that email address."

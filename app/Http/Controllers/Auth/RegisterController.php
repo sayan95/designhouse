@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Auth;
 use App\models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Hash;
 use App\Providers\RouteServiceProvider;
+use App\Repositories\Contracts\UserContract;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
@@ -14,6 +16,13 @@ class RegisterController extends Controller
 {
     
     use RegistersUsers;
+
+    protected $user;
+
+    public function __construct(UserContract $user)
+    {
+        $this->user = $user;
+    }
 
     protected function validator(array $data)
     {
@@ -33,7 +42,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        return $this->user->create([
             'username' => $data['username'],
             'name' => $data['name'],
             'email' => $data['email'],
@@ -44,7 +53,7 @@ class RegisterController extends Controller
     protected function registered(Request $request, User $user)
     {
         return response()->json([
-            'user' => $user,
+            'user' => new UserResource($user),
             'message' =>'An account activation link is sent to your email address. 
                         Please activate your account before getting started with us.'
         ], 200);

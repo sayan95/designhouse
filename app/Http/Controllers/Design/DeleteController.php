@@ -2,14 +2,26 @@
 
 namespace App\Http\Controllers\Design;
 
-use App\Http\Controllers\Controller;
 use App\models\Design;
-use Illuminate\Contracts\Cache\Store;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Contracts\Cache\Store;
 use Illuminate\Support\Facades\Storage;
+use App\Repositories\Contracts \DesignContract;
 
 class DeleteController extends Controller
 {
+
+    protected $design;
+    
+    /**
+     * Injection
+     */
+    public function __construct(DesignContract $design){
+        $this->design = $design;
+    }
+
+
     /**
      *  delete the files associated with the database record from the filesystem
      */
@@ -29,13 +41,13 @@ class DeleteController extends Controller
      * Destroy a design
      */
     public function destroy($id){
-        $design = Design::findOrFail($id);
+        $design = $this->design->find($id);
 
         $this->authorize('delete', $design);
         
         $this->deleteAssoc($design); 
         
-        $design->delete();
+        $this->design->delete($id);
         
         return response()->json(['success'=>[
             'message' => 'The design is deleted successfuly'

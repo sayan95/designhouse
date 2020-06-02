@@ -3,7 +3,9 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-//Route group fro authenticated users only
+/**
+ * Route group fro authenticated users only
+ */
 Route::group(['middleware' =>['auth:api']],function(){
     Route::post('logout','Auth\LoginController@logout');
     Route::put('settings/profile','User\SettingsController@updateProfile');
@@ -19,7 +21,12 @@ Route::group(['middleware' =>['auth:api']],function(){
     Route::delete('designs/delete/{id}','Design\DeleteController@destroy');
 });
 
-// Route group for guests only
+
+
+
+/**
+ * Route group for guests only
+ */
 Route::group(['middleware'=>['guest:api']],function(){
     Route::post('register','Auth\RegisterController@register');
     Route::post('verification/verified/{user}','Auth\VerificationController@verify')->name('verification.verify');
@@ -29,12 +36,28 @@ Route::group(['middleware'=>['guest:api']],function(){
     Route::post('password/reset','Auth\ResetPasswordController@reset');
 });
 
-// public routes
+
+
+/**
+ * public routes
+ */ 
 Route::get('me','User\UserController@getUser');
 
-// testing route
+// get all designs
+Route::get('designs','Design\DesignController@index');
+
+// get all users
+Route::get('users','User\UserController@index');
+
+
+
+
+
+
+
+/**
+ * testing route
+ */
 Route::get('/test',function(){
-    return response()->json([
-        'message'=>'Test route working !'
-    ],200);
+    //
 });

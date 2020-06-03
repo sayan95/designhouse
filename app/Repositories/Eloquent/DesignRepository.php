@@ -15,4 +15,12 @@ class DesignRepository extends BaseRepository implements DesignContract
         $design = $this->find($id);
         $design->retag($tags);
     }
+
+    public function addComment($design_id, array $data){
+        $design = $this->find($design_id);
+
+        $comment = $design->comments()->create($data);
+
+        return $comment;
+    }
 }

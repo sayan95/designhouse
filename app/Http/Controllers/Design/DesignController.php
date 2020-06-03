@@ -10,6 +10,7 @@ use App\Repositories\Contracts\DesignContract;
 use App\Repositories\Eloquent\Criteria\{
     LatestFirst,
     AllLive,
+    EagerLoad,
     ForUser
 };
 
@@ -34,7 +35,8 @@ class DesignController extends Controller
         $designs = $this->design->withCriterias([
             new LatestFirst(), 
             new AllLive(),
-            new ForUser(1)
+            new ForUser(1),
+            new EagerLoad(['user','comments'])
         ])->all();
         return DesignResource::collection($designs);
     }
@@ -43,7 +45,9 @@ class DesignController extends Controller
      *  @return object
      */
     public function findById($id){
-        $design = $this->design->find($id);
+        $design = $this->design->withCriterias([
+            new EagerLoad(['user','comments'])
+        ])->find($id);
         return new DesignResource($design);
     }
 

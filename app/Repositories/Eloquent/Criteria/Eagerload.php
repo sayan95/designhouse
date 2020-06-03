@@ -12,6 +12,7 @@ class EagerLoad implements Criteria
     {
         $this->relationships = $relationships;
     }
+    
     public function apply($model){
         return $model->with($this->relationships);
     }

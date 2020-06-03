@@ -36,6 +36,5 @@ class RepositoryServiceProvider extends ServiceProvider
          */
         $this->app->bind(DesignContract::class, DesignRepository::class);
         $this->app->bind(UserContract::class, UserRepository::class);
-
     }
 }

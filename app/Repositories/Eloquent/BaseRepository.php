@@ -58,7 +58,7 @@ abstract class BaseRepository implements BaseContract, Criterias
     }
 
     public function findWhereFirst($col, $val){
-        return $this->model->where($col, $val)->first();
+        return $this->model->where($col, $val)->get()->first();
     }
 
     public function paginate($noOfItem){

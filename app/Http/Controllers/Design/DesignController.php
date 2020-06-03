@@ -53,7 +53,13 @@ class DesignController extends Controller
     */
     public function findByColName($col, $val){
         $designs = $this->design->findWhere($col, $val);
-        return DesignResource::collection($designs);
+        
+        if($designs->count() > 0)
+            return DesignResource::collection($designs);
+        
+        return response()->json(["error"=>[
+            'message' => "No records waere found"
+        ]], 500);
     }
 
     /**
@@ -62,7 +68,12 @@ class DesignController extends Controller
      */
     public function findByColNameFirst($col, $val){
         $design = $this->design->findWhereFirst($col, $val);
-        return new DesignResource($design);
+        if($design){
+            return new DesignResource($design);
+        }
+        return response()->json(["error"=>[
+            'message' => "No record was found"
+        ]], 500);
     }
 
     /**

@@ -21,8 +21,10 @@ Route::group(['middleware' =>['auth:api']],function(){
     Route::delete('designs/delete/{id}','Design\DeleteController@destroy');
 
 
-    // add comment
+    //comment
     Route::post('designs/{id}/comment','Design\CommentController@store');
+    Route::put('comments/{id}','Design\CommentController@update');
+    Route::delete('comments/{id}','Design\CommentController@destroy');
 });
 
 

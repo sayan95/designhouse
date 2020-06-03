@@ -54,7 +54,7 @@ class Handler extends ExceptionHandler
     {
         if($exception instanceof AuthorizationException && $request->expectsJson()){
             return response()->json(['error'=>[
-                'message' => "Sorry ! You don't have permission to this action"
+                'message' => "Sorry ! You don't have permissions to perform this action"
             ]],403);
         }
 

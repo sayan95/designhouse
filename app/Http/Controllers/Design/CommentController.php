@@ -104,7 +104,10 @@ class CommentController extends Controller
      *  check if the user liked the design
      */
     public function checkIfUserHasLiked($comment_id){
-        return $this->comment->isLikedByUser($comment_id);
+        $isLiked = $this->comment->isLikedByUser($comment_id);
+        return response()->json([
+            'liked' => $isLiked
+        ], 200);
     }
 
 }

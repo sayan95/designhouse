@@ -105,6 +105,9 @@ class DesignController extends Controller
      *  check if the user liked the design
      */
     public function checkIfUserHasLiked($design_id){
-        return $this->design->isLikedByUser($design_id);
+        $isLiked =  $this->design->isLikedByUser($design_id);
+        return response()->json([
+            'liked' => $isLiked
+        ], 200);
     }
 }

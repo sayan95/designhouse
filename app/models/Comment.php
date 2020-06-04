@@ -2,10 +2,13 @@
 
 namespace App\models;
 
+use App\models\Traits\Likeable;
 use Illuminate\Database\Eloquent\Model;
 
 class Comment extends Model
 {
+    use Likeable;
+    
     protected $fillable = [
         'body',
         'user_id'

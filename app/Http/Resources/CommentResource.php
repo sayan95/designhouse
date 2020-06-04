@@ -18,6 +18,7 @@ class CommentResource extends JsonResource
         return [
             'id' => $this->id,
             'body' => $this->body,
+            'likes'=>$this->likes()->count(),
             'created_at_dates' => [
                 'created_at_humans' => $this->created_at->diffForHumans(),
                 'created_at' => $this->created_at

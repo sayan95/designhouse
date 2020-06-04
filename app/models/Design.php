@@ -2,6 +2,7 @@
 
 namespace App\models;
 
+use App\models\Traits\Likeable;
 use App\models\User;
 use Cviebrock\EloquentTaggable\Taggable;
 use Illuminate\Database\Eloquent\Model;
@@ -9,7 +10,7 @@ use Illuminate\Support\Facades\Storage;
 
 class Design extends Model
 {
-    use Taggable;
+    use Taggable, Likeable;
     
     protected $fillable = [
         'user_id',

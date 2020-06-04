@@ -87,4 +87,24 @@ class CommentController extends Controller
             'message' => "Comment deleted successfully"
         ]],200);
     }
+
+    /**
+     * Like a design
+     * @return Response
+     */
+    public function like($id){
+        $this->comment->like($id);
+
+        return response()->json(['success' => [
+            'message'=>"Successful"
+        ]], 200);
+    }
+
+    /**
+     *  check if the user liked the design
+     */
+    public function checkIfUserHasLiked($comment_id){
+        return $this->comment->isLikedByUser($comment_id);
+    }
+
 }

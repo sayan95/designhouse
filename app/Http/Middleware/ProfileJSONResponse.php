@@ -18,6 +18,7 @@ class ProfileJSONResponse
     public function handle($request, Closure $next)
     {
         $response = $next($request);
+        
         if( ! app()->bound('debugbar') || ! app('debugbar')->isEnabled() ){
             return $response;
         }

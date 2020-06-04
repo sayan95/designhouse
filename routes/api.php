@@ -20,11 +20,16 @@ Route::group(['middleware' =>['auth:api']],function(){
     // Delete design
     Route::delete('designs/delete/{id}','Design\DeleteController@destroy');
 
+    // Likes and unlikes
+    Route::post('designs/{id}/like','Design\DesignController@like');
+    Route::get('designs/{id}/liked','Design\DesignController@checkIfUserHasLiked');
 
     //comment
     Route::post('designs/{id}/comment','Design\CommentController@store');
     Route::put('comments/{id}','Design\CommentController@update');
     Route::delete('comments/{id}','Design\CommentController@destroy');
+    Route::post('comments/{id}/like','Design\CommentController@like');
+    Route::get('comments/{id}/liked','Design\CommentController@checkIfUserHasLiked');
 });
 
 

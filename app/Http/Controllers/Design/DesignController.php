@@ -87,5 +87,24 @@ class DesignController extends Controller
     public function pagination($noOfItems){
         $designs = $this->design->paginate($noOfItems);
         return DesignResource::collection($designs);
+    } 
+
+    /**
+     * Like a design
+     * @return Response
+     */
+    public function like($id){
+        $this->design->like($id);
+
+        return response()->json(['success' => [
+            'message'=>"Successful"
+        ]], 200);
+    }
+
+    /**
+     *  check if the user liked the design
+     */
+    public function checkIfUserHasLiked($design_id){
+        return $this->design->isLikedByUser($design_id);
     }
 }

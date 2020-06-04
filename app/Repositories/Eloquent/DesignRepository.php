@@ -23,4 +23,19 @@ class DesignRepository extends BaseRepository implements DesignContract
 
         return $comment;
     }
+
+    public function like($design_id){
+        $design = $this->model->findOrFail($design_id);
+
+        if($design->isLikedByUser(auth('api')->id())){
+            $design->unlike();
+        }else{
+            $design->like();
+        }
+    }
+
+    public function isLikedByUser($design_id){
+        $design = $this->model->findOrFail($design_id);
+        return $design->isLikedByUser(auth('api')->id());
+    }   
 }

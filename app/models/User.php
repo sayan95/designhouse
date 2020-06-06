@@ -44,7 +44,9 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
-
+    /**
+     *  Notification controller
+     */
     public function sendEmailVerificationNotification()
     {
         $this->notify(new VerifyEmail);
@@ -104,11 +106,31 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
                 ->withTimestamps();
     }
 
-    // auser can own multiple teams
+    // a user can own multiple teams
     public function ownedTeams(){
         return $this->teams()
                 ->where('owner_id',$this->id);
     }
+    
+    // user's invitations
+    public function invitations(){
+        return $this->hasMany(Invitation::class, 'recipient_email', 'email');
+    }
+
+    // user's chats
+    public function chats(){
+        return $this->belongsToMany(Chat::class, 'participants');
+    }
+
+    // user's messages
+    public function messages(){
+        return $this->hasMany(Message::class);
+    }
+
+
+    /**
+     *  Helpers 
+     */
 
     // check if the said user is the owner of the given team
     public function isOwner(Team $team){
@@ -118,13 +140,18 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
                 ->count();
     }
 
-    // user's invitations
-    public function invitations(){
-        return $this->hasMany(Invitation::class, 'recipient_email', 'email');
+    // check whether the current user has a chat 
+    // with the intended user id.If it has then return that 
+    // chat for continuing chatting, otherwise create a new chat
+
+    public function getChatWithUser($user_id){
+        $chat = $this->chats()
+                ->whereHas('participants', function($query) use ($user_id){
+                    $query->where('user_id', $user_id);
+                })
+                ->first();
+
+        return $chat;
     }
-    
-
-
-
-    
+  
 }

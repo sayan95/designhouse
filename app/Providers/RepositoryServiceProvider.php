@@ -8,14 +8,18 @@ use App\Repositories\Contracts\{
     UserContract,
     CommentContract,
     TeamContract,
-    InvitationContract
+    InvitationContract,
+    ChatContract,
+    MessageContract
 };
 use App\Repositories\Eloquent\{
     DesignRepository,
     UserRepository,
     CommentRepository,
     TeamRepository,
-    InvitationRepository
+    InvitationRepository,
+    ChatRepository,
+    MessageRepository
 };
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -45,5 +49,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(CommentContract::class, CommentRepository::class);
         $this->app->bind(TeamContract::class, TeamRepository::class);
         $this->app->bind(InvitationContract::class, InvitationRepository::class);
+        $this->app->bind(ChatContract::class, ChatRepository::class);
+        $this->app->bind(MessageContract::class, MessageRepository::class);
     }
 }

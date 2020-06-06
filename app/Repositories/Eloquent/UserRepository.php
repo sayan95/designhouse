@@ -10,4 +10,10 @@ class UserRepository extends BaseRepository implements UserContract
     public function model(){
         return User::class;
     }
+
+    public function findByEmail($email)
+    {
+        $user = $this->model->where('email', $email)->first();
+        return $user;
+    }
 }

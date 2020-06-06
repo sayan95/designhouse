@@ -83,10 +83,6 @@ class UploadController extends Controller
         $this->imageManipulate($design);
 
         return new DesignResource($design);
-        
-        // return response()->json(['success'=>[
-        //     'message' => "Design is being uploaded",
-        //     'design' => $design
-        // ]], 200);
+
     }
 }

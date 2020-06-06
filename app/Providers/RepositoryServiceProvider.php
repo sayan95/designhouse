@@ -6,12 +6,16 @@ use Illuminate\Support\ServiceProvider;
 use App\Repositories\Contracts\{
     DesignContract,
     UserContract,
-    CommentContract
+    CommentContract,
+    TeamContract,
+    InvitationContract
 };
 use App\Repositories\Eloquent\{
     DesignRepository,
     UserRepository,
-    CommentRepository
+    CommentRepository,
+    TeamRepository,
+    InvitationRepository
 };
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -39,5 +43,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(DesignContract::class, DesignRepository::class);
         $this->app->bind(UserContract::class, UserRepository::class);
         $this->app->bind(CommentContract::class, CommentRepository::class);
+        $this->app->bind(TeamContract::class, TeamRepository::class);
+        $this->app->bind(InvitationContract::class, InvitationRepository::class);
     }
 }

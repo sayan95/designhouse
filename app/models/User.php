@@ -84,12 +84,47 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
         'location'
     ];
 
+    /**
+     *  Eloquent ORM relations
+     */
 
+     // a user can have many designs
     public function designs(){
         return $this->hasMany(Design::class);
     }
 
+    // a user can comment multiple times 
     public function comments(){
         return $this->hasMany(Comment::class);
     }
+
+    // a user can belongs to multiple teams
+    public function teams(){
+        return $this->belongsToMany(Team::class)
+                ->withTimestamps();
+    }
+
+    // auser can own multiple teams
+    public function ownedTeams(){
+        return $this->teams()
+                ->where('owner_id',$this->id);
+    }
+
+    // check if the said user is the owner of the given team
+    public function isOwner(Team $team){
+        return (bool)$this->teams()
+                ->where(['id'=> $team->id,
+                         'owner_id' => $this->id])
+                ->count();
+    }
+
+    // user's invitations
+    public function invitations(){
+        return $this->hasMany(Invitation::class, 'recipient_email', 'email');
+    }
+    
+
+
+
+    
 }

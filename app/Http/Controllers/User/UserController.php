@@ -30,7 +30,9 @@ class UserController extends Controller
     
     public function getUser(){
         if(auth('api')->check()){
-            $user = auth()->user();
+            $user = $this->user->withCriterias([
+               new EagerLoad(['designs'])   
+            ])->find(auth('api')->id());
             return new UserResource($user);
         }
 

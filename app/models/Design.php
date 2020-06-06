@@ -21,7 +21,8 @@ class Design extends Model
         'close_to_comment',
         'is_live',
         'upload_successful',
-        'disk'
+        'disk',
+        'team_id'
     ];
 
     public function user(){
@@ -31,6 +32,10 @@ class Design extends Model
     public function comments(){
         return $this->morphMany(Comment::class, 'commentable')
                     ->orderBy('created_at','asc');
+    }
+
+    public function team(){
+        return $this->belongsTo(Team::class);
     }
 
     public function getImagesAttribute(){

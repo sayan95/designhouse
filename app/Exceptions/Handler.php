@@ -60,7 +60,7 @@ class Handler extends ExceptionHandler
 
         if($exception instanceof ModelNotFoundException && $request->expectsJson()){
             return response()->json(['error' => [
-                'message' => "No design found "
+                'message' => "Nothing was found "
             ]] , 404);
         }
         

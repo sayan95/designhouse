@@ -91,7 +91,9 @@ Route::get('users','User\UserController@index');
 // get team info
 Route::get('teams/slug/{slug}','Teams\TeamsController@findBySlug');
 
-
+// search design routes
+Route::get('search/designs','Design\DesignController@search');
+Route::get('search/designers','User\UserController@search');
 
 
 

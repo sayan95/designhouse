@@ -22,9 +22,7 @@ class UserController extends Controller
     }
 
     public function index(){
-        $users = $this->user->withCriterias([
-            new EagerLoad(['designs'])
-        ])->all();
+        $users = $this->user->withCriterias([])->all();
         return UserResource::collection($users);
     }
     
@@ -37,5 +35,10 @@ class UserController extends Controller
         }
 
         return response()->json(null, 401);
+    }
+
+    public function search(Request $request){
+        $designers = $this->user->search($request);
+        return UserResource::collection($designers);
     }
 }

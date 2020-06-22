@@ -110,4 +110,12 @@ class DesignController extends Controller
             'liked' => $isLiked
         ], 200);
     }
+
+    /**
+     *  search design
+     */
+    public function search(Request $request){
+        $designs = $this->design->search($request);
+        return DesignResource::collection($designs);
+    }
 }

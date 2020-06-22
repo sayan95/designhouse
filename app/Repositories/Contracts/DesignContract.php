@@ -1,6 +1,10 @@
 <?php
 
-namespace App\Repositories\Contracts ; 
+namespace App\Repositories\Contracts ;
+
+use Illuminate\Http\Request;
+
+
 
 interface DesignContract 
 {
@@ -8,4 +12,5 @@ interface DesignContract
     public function addComment($design_id, array $data);
     public function like($design_id);
     public function isLikedByUser($design_id);
+    public function search(Request $request);
 }

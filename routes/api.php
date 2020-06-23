@@ -81,15 +81,16 @@ Route::get('me','User\UserController@getUser');
 //  route for designs
 Route::get('designs','Design\DesignController@index');
 Route::get('designs/{id}','Design\DesignController@findById');
-Route::get('designs_where/{col}/{val}','Design\DesignController@findByColName');
-Route::get('designs_where_first/{col}/{val}','Design\DesignController@findByColNameFirst');
-Route::get('designs/paginate/{no}','Design\DesignController@pagination');
+Route::get('designs/slug/{slug}','Design\DesignController@findBySlug');
+
 
 // get all users
 Route::get('users','User\UserController@index');
+Route::get('users/{id}/designs','Design\DesignController@getForUser');
 
 // get team info
 Route::get('teams/slug/{slug}','Teams\TeamsController@findBySlug');
+Route::get('teams/{id}/designs','Design\DesignController@getForTeam');
 
 // search design routes
 Route::get('search/designs','Design\DesignController@search');

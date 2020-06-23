@@ -51,7 +51,8 @@ class TeamsController extends Controller
      * @return JSON
     */
     public function findBySlug($slug){
-        //
+        $team = $this->team->findWhereFirst('slug', $slug);
+        return new TeamsResource($team);
     }
 
     /** 

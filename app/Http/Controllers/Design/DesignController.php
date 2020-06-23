@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Design;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\DesignResource;
+use App\Http\Resources\UserResource;
 use App\Repositories\Contracts\DesignContract;
 
 use App\Repositories\Eloquent\Criteria\{
@@ -50,44 +51,7 @@ class DesignController extends Controller
         ])->find($id);
         return new DesignResource($design);
     }
-
-    /**
-    *  Find designs by col name and its value
-    *  @return Collection  
-    */
-    public function findByColName($col, $val){
-        $designs = $this->design->findWhere($col, $val);
-        
-        if($designs->count() > 0)
-            return DesignResource::collection($designs);
-        
-        return response()->json(["error"=>[
-            'message' => "No records waere found"
-        ]], 500);
-    }
-
-    /**
-     * find a design by col name and its value
-     * @return Object
-     */
-    public function findByColNameFirst($col, $val){
-        $design = $this->design->findWhereFirst($col, $val);
-        if($design){
-            return new DesignResource($design);
-        }
-        return response()->json(["error"=>[
-            'message' => "No record was found"
-        ]], 500);
-    }
-
-    /**
-     *  Paginate a design collection
-     *  @return Collection 
-     */
-    public function pagination($noOfItems){
-        $designs = $this->design->paginate($noOfItems);
-        return DesignResource::collection($designs);
-    } 
+ 
 
     /**
      * Like a design
@@ -116,6 +80,37 @@ class DesignController extends Controller
      */
     public function search(Request $request){
         $designs = $this->design->search($request);
+        return DesignResource::collection($designs);
+    }
+
+    /**
+     * Get design by its slug
+     */
+    public function findBySlug($slug){
+        $design = $this->design->withCriterias([
+            new AllLive
+        ])->findWhereFirst('slug', $slug);
+        return new DesignResource($design);
+    }
+
+    /**
+     *  Get design for team
+     */
+    public function getForTeam($team_id){
+        $designs = $this->design->withCriterias([
+            new AllLive  
+        ])->findWhere('team_id', $team_id);
+        return  DesignResource::collection($designs);
+    }
+
+    /**
+     *  Get designs for a user
+     */
+    public function getForUser($user_id){
+        $designs = $this->design->withCriterias([
+            new AllLive
+        ])->findWhere('user_id', $user_id);
+
         return DesignResource::collection($designs);
     }
 }
